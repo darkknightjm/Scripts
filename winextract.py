@@ -2,7 +2,6 @@ import optparse
 import os
 import subprocess
 import shutil
-import xml.etree.ElementTree
 
 class Environment:		  
 	
@@ -140,7 +139,7 @@ class Environment:
 				str = dir
 				
 				for dll in os.listdir(os.path.join(self.outFolder,self.archPatch,self.patchPath,dir)):
-						if dll.endswith((".dll",".exe")):
+						if dll.endswith((".dll",".exe",".sys")):
 							str += delim + dll
 				rpt.write(str + "\n")
 				str = ""		
@@ -164,6 +163,11 @@ def main():
 	# Ensure valid argument supplied and check extension
 	if(msUpdate is not None) and (msUpdate.endswith(".msu")):
 		
+		if outputDir is None:
+			print "\nNo output directory supplied. \n"
+			print "Using: " + msUpdate[:-4] + "\n\n"
+			outputDir = msUpdate[:-4]
+			
 		# Initialize class
 		env = Environment(msUpdate,outputDir,pArch)
 		
@@ -181,6 +185,6 @@ def main():
 	else:
 		print parser.usage
 		exit(0)
-
+	
 if __name__ == "__main__":
 	main()
